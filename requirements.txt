@@ -1,0 +1,6 @@
+Flask
+pandas
+nltk
+numpy
+joblib
+flask_cors
