@@ -4,3 +4,10 @@ nltk
 numpy
 joblib
 flask_cors
+seaborn   #0.13.2
+smtplib
+datetime
+sqlite3
+matplotlib
+Flask_mail
+fpdf

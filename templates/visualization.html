@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Visualization</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Data Visualization</h1>
+    <img src="{{ url_for('static', filename='claims_by_date.png') }}" alt="Claims by Date">
+    <img src="{{ url_for('static', filename='overall_claims_status.png') }}" alt="Overall Claims Status">
+</body>
+</html>
