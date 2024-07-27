@@ -4,9 +4,26 @@
     <meta charset="UTF-8">
     <title>Data Visualization</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .top-right {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+    </style>
 </head>
 <body>
     <h1>Data Visualization</h1>
+    <div class="top-right">
+        <button onclick="location.href='/home'">Home</button>
+    </div>
+    <form action="/visualization" method="get">
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" required>
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" required>
+        <button type="submit">Filter</button>
+    </form>
     <img src="{{ url_for('static', filename='claims_by_date.png') }}" alt="Claims by Date">
     <img src="{{ url_for('static', filename='overall_claims_status.png') }}" alt="Overall Claims Status">
 </body>

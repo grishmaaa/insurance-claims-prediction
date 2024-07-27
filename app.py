@@ -5,6 +5,8 @@ import numpy as np
 import sqlite3
 import datetime
 import matplotlib.pyplot as plt
+# plt.use('Agg')
+
 import seaborn as sns
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -93,6 +95,7 @@ def insert_claim_to_db(claim_data, claim_status):
     conn.close()
 
 @app.route('/')
+@app.route('/home')
 def home():
     return render_template('home.html')
 
@@ -118,11 +121,20 @@ def predict():
 
     return render_template('index.html', prediction_text=f'Claim Status: {result}')
 
-@app.route('/visualization')
+@app.route('/visualization', methods=['GET'])
 def visualization():
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+
     conn = sqlite3.connect('claims.db')
     df = pd.read_sql_query("SELECT date, claim_status FROM claims", conn)
     conn.close()
+
+    df['date'] = pd.to_datetime(df['date'])
+    if start_date and end_date:
+        start_date = pd.to_datetime(start_date)
+        end_date = pd.to_datetime(end_date)
+        df = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
 
     sns.set(style="darkgrid")
     plt.figure(figsize=(10, 6))
@@ -205,4 +217,4 @@ def send_report():
 
 if __name__ == "__main__":
     init_db()
-    app.run(debug=True)
+    app.run(debug=True, threaded=False)

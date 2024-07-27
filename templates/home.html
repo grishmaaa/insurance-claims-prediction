@@ -4,13 +4,74 @@
     <meta charset="UTF-8">
     <title>Home</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        nav {
+            margin-top: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #007BFF;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #0056b3;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .cta {
+            margin-top: 30px;
+        }
+
+        .cta a {
+            padding: 10px 20px;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .cta a:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <h1>Insurance Claims Processing</h1>
-    <nav>
-        <a href="{{ url_for('form') }}">Submit Claim</a> |
-        <a href="{{ url_for('visualization') }}">Visualize Data</a> |
-        <a href="{{ url_for('data') }}">View Data</a>
-    </nav>
+    <div class="container">
+        <h1>Insurance Claims Processing</h1>
+        <nav>
+            <a href="{{ url_for('form') }}">Submit Claim</a>
+            <a href="{{ url_for('visualization') }}">Visualize Data</a>
+            <a href="{{ url_for('data') }}">View Data</a>
+        </nav>
+        
+    </div>
 </body>
 </html>
