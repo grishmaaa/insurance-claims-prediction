@@ -190,7 +190,7 @@ def send_report():
     chart2.figure.savefig('static/overall_claims_status.png')
 
     message = MIMEMultipart()
-    message['From'] = 'your_email@example.com'
+    message['From'] = 'grishma.renuka@gmail.com'
     message['To'] = email
     message['Subject'] = 'Claims Report'
 
@@ -208,12 +208,16 @@ def send_report():
 
     server = smtplib.SMTP('smtp.example.com', 587)
     server.starttls()
-    server.login('your_email@example.com', 'your_password')
+    server.login('grishma.renuka@gmail.com', 'Mani!@18')
     text = message.as_string()
-    server.sendmail('your_email@example.com', email, text)
+    server.sendmail('grishma.renuka@gmail.com', email, text)
     server.quit()
 
     return jsonify({'message': 'Report sent successfully'})
+
+@app.route('/api_integration')
+def api_integration():
+    return render_template('api_integration.html')
 
 if __name__ == "__main__":
     init_db()

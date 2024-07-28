@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Claim Prediction & Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #333;
+        }
+        .container {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 10px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn {
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Insurance Claim Prediction & Report</h1>
+        
+        <div class="form-group">
+            <label for="prediction_data">Prediction Data (JSON):</label>
+            <textarea id="prediction_data" class="form-control" rows="10"></textarea>
+        </div>
+        <button class="btn" onclick="predictClaim()">Predict Claim Status</button>
+
+        <div class="form-group">
+            <label for="email">Email for Report:</label>
+            <input type="email" id="email" class="form-control" placeholder="Enter your email">
+        </div>
+        <button class="btn" onclick="sendReport()">Send Report</button>
+
+        <div class="output" id="output"></div>
+        <div class="top-right">
+            <button onclick="location.href='/home'">Home</button>
+        </div>
+    </div>
+
+    <script>
+        function predictClaim() {
+            const data = document.getElementById('prediction_data').value;
+            fetch('/api/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: data
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('output').innerText = `Prediction: ${data.claim_status}`;
+            })
+            .catch(error => {
+                document.getElementById('output').innerText = `Error: ${error}`;
+            });
+        }
+
+        function sendReport() {
+            const email = document.getElementById('email').value;
+            fetch(`/api/send_report?email=${email}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('output').innerText = data.message;
+            })
+            .catch(error => {
+                document.getElementById('output').innerText = `Error: ${error}`;
+            });
+        }
+    </script>
+</body>
+</html>
