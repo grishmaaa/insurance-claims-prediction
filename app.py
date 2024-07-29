@@ -152,10 +152,10 @@ def visualization():
 @app.route('/data')
 def data():
     conn = sqlite3.connect('claims.db')
-    df = pd.read_sql_query("SELECT * FROM claims", conn)
+    df = pd.read_sql_query("SELECT name, date, email, claim_status FROM claims", conn)
     conn.close()
 
-    return render_template('data.html', data=df.to_html())
+    return render_template('data.html', data=df.to_html(index=False))
 
 @app.route('/api/predict', methods=['POST'])
 def api_predict():
