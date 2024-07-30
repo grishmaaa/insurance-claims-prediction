@@ -83,35 +83,22 @@
     </div>
 
     <script>
-        function predictClaim() {
-            const data = document.getElementById('prediction_data').value;
-            fetch('/api/predict', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: data
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('output').innerText = `Prediction: ${data.claim_status}`;
-            })
-            .catch(error => {
-                document.getElementById('output').innerText = `Error: ${error}`;
-            });
-        }
-
         function sendReport() {
             const email = document.getElementById('email').value;
             fetch(`/api/send_report?email=${email}`)
             .then(response => response.json())
             .then(data => {
-                document.getElementById('output').innerText = data.message;
+                if (data.error) {
+                    document.getElementById('output').innerText = `Error: ${data.error}`;
+                } else {
+                    document.getElementById('output').innerText = data.message;
+                }
             })
             .catch(error => {
                 document.getElementById('output').innerText = `Error: ${error}`;
             });
         }
     </script>
+    
 </body>
 </html>

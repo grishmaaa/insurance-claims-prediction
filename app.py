@@ -173,47 +173,59 @@ def api_predict():
 
 @app.route('/api/send_report', methods=['GET'])
 def send_report():
-    email = request.args.get('email')
-    conn = sqlite3.connect('claims.db')
-    df = pd.read_sql_query("SELECT date, claim_status FROM claims", conn)
-    conn.close()
+    try:
+        email = request.args.get('email')
+        if not email:
+            return jsonify({'error': 'Email parameter is required'}), 400
+        
+        conn = sqlite3.connect('claims.db')
+        df = pd.read_sql_query("SELECT date, claim_status FROM claims", conn)
+        conn.close()
 
-    sns.set(style="darkgrid")
-    plt.figure(figsize=(10, 6))
-    chart1 = sns.countplot(x='date', hue='claim_status', data=df)
-    plt.title('Claims Status by Date')
-    chart1.figure.savefig('static/claims_by_date.png')
+        sns.set(style="darkgrid")
+        plt.figure(figsize=(10, 6))
+        chart1 = sns.countplot(x='date', hue='claim_status', data=df)
+        plt.title('Claims Status by Date')
+        chart1.figure.savefig('static/claims_by_date.png')
 
-    plt.figure(figsize=(10, 6))
-    chart2 = sns.countplot(x='claim_status', data=df)
-    plt.title('Overall Claims Status')
-    chart2.figure.savefig('static/overall_claims_status.png')
+        plt.figure(figsize=(10, 6))
+        chart2 = sns.countplot(x='claim_status', data=df)
+        plt.title('Overall Claims Status')
+        chart2.figure.savefig('static/overall_claims_status.png')
 
-    message = MIMEMultipart()
-    message['From'] = 'grishma.renuka@gmail.com'
-    message['To'] = email
-    message['Subject'] = 'Claims Report'
+        message = MIMEMultipart()
+        message['From'] = 'grishma.renuka@gmail.com'
+        message['To'] = email
+        message['Subject'] = 'Claims Report'
 
-    body = 'Attached is the claims report.'
-    message.attach(MIMEText(body, 'plain'))
+        body = 'Attached is the claims report.'
+        message.attach(MIMEText(body, 'plain'))
 
-    filenames = ['static/claims_by_date.png', 'static/overall_claims_status.png']
-    for filename in filenames:
-        with open(filename, 'rb') as attachment:
-            part = MIMEBase('application', 'octet-stream')
-            part.set_payload(attachment.read())
-            encoders.encode_base64(part)
-            part.add_header('Content-Disposition', f'attachment; filename={filename}')
-            message.attach(part)
+        filenames = ['static/claims_by_date.png', 'static/overall_claims_status.png']
+        for filename in filenames:
+            with open(filename, 'rb') as attachment:
+                part = MIMEBase('application', 'octet-stream')
+                part.set_payload(attachment.read())
+                encoders.encode_base64(part)
+                part.add_header('Content-Disposition', f'attachment; filename={filename}')
+                message.attach(part)
 
-    server = smtplib.SMTP('smtp.example.com', 587)
-    server.starttls()
-    server.login('grishma.renuka@gmail.com', 'Mani!@18')
-    text = message.as_string()
-    server.sendmail('grishma.renuka@gmail.com', email, text)
-    server.quit()
+        # Configure SMTP server settings
+        smtp_server = 'smtp.gmail.com'
+        smtp_port = 587
+        smtp_username = 'grishma.renuka@gmail.com'
+        smtp_password = '16_char_password'  # Use an app-specific password if 2FA is enabled
 
-    return jsonify({'message': 'Report sent successfully'})
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+        text = message.as_string()
+        server.sendmail(smtp_username, email, text)
+        server.quit()
+
+        return jsonify({'message': 'Report sent successfully'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api_integration')
 def api_integration():
