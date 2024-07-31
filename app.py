@@ -214,7 +214,7 @@ def send_report():
         smtp_server = 'smtp.gmail.com'
         smtp_port = 587
         smtp_username = 'grishma.renuka@gmail.com'
-        smtp_password = '16_char_password'  # Use an app-specific password if 2FA is enabled
+        smtp_password = 'gdil bdsk tcfl vvbw'  # Use an app-specific password if 2FA is enabled
 
         server = smtplib.SMTP(smtp_server, smtp_port)
         server.starttls()
