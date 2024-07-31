@@ -5,6 +5,23 @@
     <title>Home</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+        .footer a {
+            color: #FFD700;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
@@ -71,9 +88,13 @@
             <a href="{{ url_for('visualization') }}">Visualize Data</a>
             <a href="{{ url_for('data') }}">View Data</a>
             <a href="{{ url_for('api_integration') }}">API Integration</a>
-        </nav>
-        
-        
+        </nav>  
+    </div>
+
+    <div class="footer">
+        <p>Contact: <a href="mailto:grishma.renuka@gmail.com">grishma.renuka@gmail.com</a> | 
+           <a href="https://www.linkedin.com/in/grishma-m/" target="_blank">LinkedIn</a> | 
+           <a href="https://github.com/grishmaaa" target="_blank">GitHub</a></p>
     </div>
 </body>
 </html>
